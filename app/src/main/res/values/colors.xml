@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Material 3 Color Palette (Indigo/Blue based) -->
+    <color name="primary">#3F51B5</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="primaryContainer">#E8EAF6</color>
+    <color name="onPrimaryContainer">#1A237E</color>
+
+    <color name="secondary">#5C6BC0</color>
+    <color name="onSecondary">#FFFFFF</color>
+    <color name="secondaryContainer">#E8EAF6</color>
+    <color name="onSecondaryContainer">#1A237E</color>
+
+    <color name="tertiary">#009688</color>
+    <color name="onTertiary">#FFFFFF</color>
+
+    <color name="background">#F8F9FA</color>
+    <color name="onBackground">#1C1B1F</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="onSurface">#1C1B1F</color>
+
+    <color name="error">#B3261E</color>
+    <color name="onError">#FFFFFF</color>
+
+    <color name="result_bg">#E8F5E9</color>
+    <color name="result_text">#2E7D32</color>
+    <color name="result_stroke">#C8E6C9</color>
+</resources>

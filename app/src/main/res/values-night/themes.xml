@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.EngineCC" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
+
+        <item name="android:windowBackground">#1C1B1F</item>
+        <item name="android:statusBarColor">#1C1B1F</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
