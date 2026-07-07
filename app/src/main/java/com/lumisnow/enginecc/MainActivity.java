@@ -15,9 +15,9 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextInputLayout tilDuongKinh, tilHanhTrinh, tilSoXilanh, tilRPM;
+    private TextInputLayout tilDuongKinh, tilHanhTrinh;
     private TextInputEditText edtDuongKinh, edtHanhTrinh, edtSoXilanh, edtRPM;
-    private TextView txtKetQua;
+    private TextView tvMainCC, tvEngineType, tvPistonSpeed, tvDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +30,21 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         tilDuongKinh = findViewById(R.id.tilDuongKinh);
         tilHanhTrinh = findViewById(R.id.tilHanhTrinh);
-        tilSoXilanh = findViewById(R.id.tilSoXilanh);
-        tilRPM = findViewById(R.id.tilRPM);
 
         edtDuongKinh = findViewById(R.id.edtDuongKinh);
         edtHanhTrinh = findViewById(R.id.edtHanhTrinh);
         edtSoXilanh = findViewById(R.id.edtSoXilanh);
         edtRPM = findViewById(R.id.edtRPM);
 
-        txtKetQua = findViewById(R.id.txtKetQua);
+        tvMainCC = findViewById(R.id.tvMainCC);
+        tvEngineType = findViewById(R.id.tvEngineType);
+        tvPistonSpeed = findViewById(R.id.tvPistonSpeed);
+        tvDetails = findViewById(R.id.tvDetails);
+        
         MaterialButton btnTinh = findViewById(R.id.btnTinh);
 
         btnTinh.setOnClickListener(v -> tinhToan());
 
-        // Hỗ trợ tính nhanh khi nhấn Done ở ô cuối (RPM)
         edtRPM.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 tinhToan();
@@ -63,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
         String strRPM = edtRPM.getText().toString().trim();
 
         if (strDK.isEmpty()) {
-            tilDuongKinh.setError("Nhập dữ liệu");
+            tilDuongKinh.setError("!");
             return;
         }
         if (strHT.isEmpty()) {
-            tilHanhTrinh.setError("Nhập dữ liệu");
+            tilHanhTrinh.setError("!");
             return;
         }
 
@@ -87,53 +88,63 @@ public class MainActivity extends AppCompatActivity {
             double ccTotal = ccSingle * n;
             double boreStrokeRatio = dK / hT;
 
-            StringBuilder sb = new StringBuilder();
+            // 1. Update CC (Main Dashboard)
+            tvMainCC.setText(String.format(Locale.getDefault(), "%.2f cc", ccTotal));
 
-            // --- DUNG TÍCH ---
-            sb.append("┃ DUNG TÍCH\n");
-            if (n > 1) {
-                sb.append(String.format(Locale.getDefault(), "  Mỗi xi-lanh: %.2f cc\n", ccSingle));
-                sb.append(String.format(Locale.getDefault(), "  Tổng (%d xi-lanh): %.2f cc\n", n, ccTotal));
-            } else {
-                sb.append(String.format(Locale.getDefault(), "  %.2f cc\n", ccTotal));
-            }
-            
-            sb.append("  Công thức: V = (π × D² × S) / 4\n");
-            sb.append(String.format(Locale.getDefault(), "  = (π × %.1f² × %.1f) / 4\n", dK, hT));
-            sb.append(String.format(Locale.getDefault(), "  = %.2f cc\n\n", ccSingle));
-
-            // --- DIỆN TÍCH PISTON ---
-            sb.append("┃ DIỆN TÍCH PISTON\n");
-            sb.append(String.format(Locale.getDefault(), "  %.2f mm² | %.2f cm²\n\n", areaMm2, areaMm2 / 100.0));
-
-            // --- PHÂN LOẠI ---
-            sb.append("┃ PHÂN LOẠI ĐỘNG CƠ\n");
-            sb.append(String.format(Locale.getDefault(), "  Tỷ lệ Bore/Stroke: %.3f\n", boreStrokeRatio));
+            // 2. Update Engine Type
+            String engineType;
+            String description;
             if (boreStrokeRatio < 0.98) {
-                sb.append("  ➡ Hành trình dài (Long Stroke)\n");
-                sb.append("  ➡ Đặc tính: Ưu tiên mô-men xoắn ở tua máy thấp\n");
+                engineType = "Long Stroke";
+                description = "Ưu tiên mô-men xoắn ở tua máy thấp";
             } else if (boreStrokeRatio <= 1.02) {
-                sb.append("  ➡ Máy vuông (Square Engine)\n");
-                sb.append("  ➡ Đặc tính: Cân bằng lực kéo và tốc độ máy\n");
+                engineType = "Square Engine";
+                description = "Cân bằng lực kéo và tốc độ máy";
             } else {
-                sb.append("  ➡ Hành trình ngắn (Oversquare)\n");
-                sb.append("  ➡ Đặc tính: Ưu tiên công suất ở tua máy cao\n");
+                engineType = "Oversquare";
+                description = "Ưu tiên công suất ở tua máy cao";
             }
+            tvEngineType.setText(engineType);
 
-            // --- TỐC ĐỘ PISTON ---
+            // 3. Update Piston Speed
+            double mps = 0;
+            String status = "";
             if (rpm > 0) {
-                double mps = (2 * hT * rpm) / 60000.0;
-                String status;
+                mps = (2 * hT * rpm) / 60000.0;
                 if (mps < 15) status = "Bình thường";
                 else if (mps < 20) status = "Khá cao";
                 else if (mps < 25) status = "Cao";
-                else status = "Rất cao (Nguy hiểm)";
-                
-                sb.append(String.format(Locale.getDefault(), "\n┃ TỐC ĐỘ PISTON (@%.0f RPM)\n", rpm));
-                sb.append(String.format(Locale.getDefault(), "  %.2f m/s (%s)\n", mps, status));
+                else status = "Nguy hiểm";
+                tvPistonSpeed.setText(String.format(Locale.getDefault(), "%.1f m/s", mps));
+            } else {
+                tvPistonSpeed.setText("---");
             }
 
-            txtKetQua.setText(sb.toString());
+            // 4. Update Detailed Analysis
+            StringBuilder details = new StringBuilder();
+            details.append("┃ PHÂN TÍCH CHI TIẾT\n\n");
+            if (n > 1) {
+                details.append(String.format(Locale.getDefault(), "  • Mỗi xi-lanh: %.2f cc\n", ccSingle));
+            }
+            details.append(String.format(Locale.getDefault(), "  • Diện tích Piston: %.1f mm²\n", areaMm2));
+            details.append(String.format(Locale.getDefault(), "  • Tỷ lệ B/S: %.3f\n", boreStrokeRatio));
+            details.append("  • Đặc tính: ").append(description).append("\n\n");
+            
+            // --- CÔNG THỨC DUNG TÍCH ---
+            details.append("┃ CÔNG THỨC DUNG TÍCH\n");
+            details.append("  V = (π × D² × S) / 4\n");
+            details.append(String.format(Locale.getDefault(), "  V = (π × %.1f² × %.1f) / 4\n", dK, hT));
+            details.append(String.format(Locale.getDefault(), "  = %.2f cc\n\n", ccSingle));
+            
+            // --- CÔNG THỨC TỐC ĐỘ PISTON ---
+            if (rpm > 0) {
+                details.append("┃ CÔNG THỨC TỐC ĐỘ PISTON\n");
+                details.append("  MPS = (2 × S × RPM) / 60000\n");
+                details.append(String.format(Locale.getDefault(), "  MPS = (2 × %.1f × %.0f) / 60000\n", hT, rpm));
+                details.append(String.format(Locale.getDefault(), "  = %.2f m/s (%s)", mps, status));
+            }
+            
+            tvDetails.setText(details.toString());
 
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Dữ liệu nhập không hợp lệ", Toast.LENGTH_SHORT).show();
