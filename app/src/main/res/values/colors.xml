@@ -6,21 +6,21 @@
     <!-- Material 3 Color Palette (Indigo/Blue based) -->
     <color name="primary">#3F51B5</color>
     <color name="onPrimary">#FFFFFF</color>
-    <color name="primaryContainer">#E8EAF6</color>
-    <color name="onPrimaryContainer">#1A237E</color>
+    <color name="primaryContainer">#F3E5F5</color>
+    <color name="onPrimaryContainer">#3B1245</color>
 
     <color name="secondary">#5C6BC0</color>
     <color name="onSecondary">#FFFFFF</color>
-    <color name="secondaryContainer">#E8EAF6</color>
-    <color name="onSecondaryContainer">#1A237E</color>
+    <color name="secondaryContainer">#FCE4EC</color>
+    <color name="onSecondaryContainer">#4A1027</color>
 
     <color name="tertiary">#009688</color>
     <color name="onTertiary">#FFFFFF</color>
 
-    <color name="background">#F8F9FA</color>
-    <color name="onBackground">#1C1B1F</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="onSurface">#1C1B1F</color>
+    <color name="background">#FFF7FA</color>
+    <color name="surface">#FFFBFE</color>
+    <color name="onBackground">#211A1D</color>
+    <color name="onSurface">#211A1D</color>
 
     <color name="error">#B3261E</color>
     <color name="onError">#FFFFFF</color>
