@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             details.append("┃ PHÂN TÍCH CHI TIẾT\n\n");
             if (n > 1) {
                 details.append(String.format(Locale.getDefault(), "  • Mỗi xi-lanh: %.2f cc\n", ccSingle));
+                details.append(String.format(Locale.getDefault(), "  • Tổng %d xi-lanh: %.2f cc\n", n, ccTotal));
             }
             details.append(String.format(Locale.getDefault(), "  • Diện tích Piston: %.1f mm²\n", areaMm2));
             details.append(String.format(Locale.getDefault(), "  • Tỷ lệ B/S: %.3f\n", boreStrokeRatio));
@@ -134,8 +135,19 @@ public class MainActivity extends AppCompatActivity {
             details.append("┃ CÔNG THỨC DUNG TÍCH\n");
             details.append("  V = (π × D² × S) / 4\n");
             details.append(String.format(Locale.getDefault(), "  V = (π × %.1f² × %.1f) / 4\n", dK, hT));
-            details.append(String.format(Locale.getDefault(), "  = %.2f cc\n\n", ccSingle));
-            
+            details.append(String.format(Locale.getDefault(), "  = %.2f cc / xi-lanh\n", ccSingle));
+
+            if (n > 1) {
+                details.append(String.format(
+                        Locale.getDefault(),
+                        "  Tổng = %.2f × %d = %.2f cc\n\n",
+                        ccSingle,
+                        n,
+                        ccTotal
+                ));
+            } else {
+                details.append("\n");
+            }
             // --- CÔNG THỨC TỐC ĐỘ PISTON ---
             if (rpm > 0) {
                 details.append("┃ CÔNG THỨC TỐC ĐỘ PISTON\n");
